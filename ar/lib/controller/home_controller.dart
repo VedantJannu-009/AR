@@ -14,13 +14,16 @@ class HomeController extends GetxController {
   TextEditingController productImgCtrl = TextEditingController();
   TextEditingController productPriceCtrl = TextEditingController();
 
-  String category = 'general';
-  String brand = 'un branded';
+  String category = 'General';
+  String brand = 'No Brand';
   bool offer = false;
 
+  List<Product> products = [];
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     productCollection = firestore.collection('product');
+    await fetchProducts();
     super.onInit();
   }
 
@@ -41,9 +44,49 @@ class HomeController extends GetxController {
       doc.set(ProductJson);
       Get.snackbar('Sucess', 'Product Added successfully',
           colorText: Colors.green);
+      setValueDefault();
     } catch (e) {
       Get.snackbar('Error', e.toString(), colorText: Colors.green);
       print(e);
     }
+  }
+
+  fetchProducts() async {
+    try {
+      QuerySnapshot productSnapshot = await productCollection.get();
+      final List<Product> retrievedProducts = productSnapshot.docs
+          .map((doc) => Product.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      products.clear();
+      products.assignAll(retrievedProducts);
+      Get.snackbar('Sucess', 'Product Fetched Successfully',
+          colorText: Colors.green);
+    } catch (e) {
+      Get.snackbar('Error', e.toString(), colorText: Colors.red);
+      print(e);
+    }finally{
+      update();
+    }
+  }
+
+  deleteProduct(String id) async {
+    try {
+      await productCollection.doc(id).delete();
+      fetchProducts();
+    } catch (e) {
+       Get.snackbar('Error',e.toString(), colorText: Colors.red);
+      print(e);
+    }
+  }
+
+  setValueDefault() {
+    productNameCtrl.clear();
+    productDiscriptionCtrl.clear();
+    productImgCtrl.clear();
+    productPriceCtrl.clear();
+
+    category = 'General';
+    brand = 'No Brand';
+    offer = false;
   }
 }
