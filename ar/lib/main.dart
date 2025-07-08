@@ -1,6 +1,7 @@
 import 'package:ar/controller/home_controller.dart';
 import 'package:ar/firebase_option.dart';
 import 'package:ar/home_screen.dart';
+// import 'package:ar/pages/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.dark,
-      home: const HomeScreen(),
+      home:  HomeScreen(),
     );
   }
 }

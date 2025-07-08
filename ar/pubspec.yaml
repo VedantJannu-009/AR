@@ -37,6 +37,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
+  firebase_auth: ^4.19.1
   
 dev_dependencies:
   flutter_test:
